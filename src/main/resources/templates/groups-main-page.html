@@ -27,17 +27,13 @@
           <thead>
             <tr>
               <th>Id</th>
-              <th>First name</th>
-              <th>Last name</th>
-              <th>Group</th>
+              <th>Name</th>
             </tr>
           </thead>
           <tbody>
-            <tr th:each="el : ${students}">
-              <td th:text="${el.student_id}"/>
-              <td th:text="${el.first_name}"/>
-              <td th:text="${el.last_name}"/>
+            <tr th:each="el : ${groups}">
               <td th:text="${el.group_id}"/>
+              <td th:text="${el.group_name}"/>
             </tr>
           </tbody>
         </table>

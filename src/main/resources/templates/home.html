@@ -36,41 +36,31 @@
 				<table class="table table-striped table-sm">
 					<thead>
 						<tr>
-							<th>#</th>
+							<th>Title</th>
 							<th>Amount</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td>Courses</td>
-							<td>0</td>
+							<td th:text="${coursesCount}" />
 						</tr>
 						<tr>
 							<td>Groups</td>
-							<td>0</td>
+							<td th:text="${groupsCount}" />
 						</tr>
 						<tr>
 							<td>Students</td>
-							<td>0</td>
+							<td th:text="${studentsCount}" />
 						</tr>
 					</tbody>
 				</table>
 			</main>
 		</div>
 	</div>
-
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script>
-		window.jQuery
-				|| document
-						.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"><\/script>')
-	</script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 </body>
 </html>
