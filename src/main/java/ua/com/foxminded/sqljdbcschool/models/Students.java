@@ -1,17 +1,29 @@
 package ua.com.foxminded.sqljdbcschool.models;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Students {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int student_id;
     private int group_id;
     private String first_name;
     private String last_name;
 
+    public Students() {
+    }
+    
+    public Students(String first_name, String last_name, int group_id) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.group_id = group_id;
+    }
+    
     public int getStudent_id() {
         return student_id;
     }

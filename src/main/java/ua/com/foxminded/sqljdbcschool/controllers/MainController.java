@@ -24,10 +24,12 @@ public class MainController {
         long studentsCount = studentsRepository.count();
         long coursesCount = coursesRepository.count();
         long groupsCount = groupsRepository.count();
+        
         model.addAttribute("studentsCount", studentsCount);
         model.addAttribute("coursesCount", coursesCount);
         model.addAttribute("groupsCount", groupsCount);
         model.addAttribute("title", "Welcome to our School");
+        
         return "home";
     }
 }
