@@ -54,4 +54,14 @@ public class StudentController {
         model.addAttribute("student", result);
         return "student-edit";
     }
+    
+    @PostMapping("/students/{id}/edit")
+    public String studentEditPost(@PathVariable(value = "id") int id, @RequestParam String first_name, @RequestParam String last_name, @RequestParam Integer group, Model model) {
+        Students studens = studentsRepository.findById(id).orElseThrow(null);
+        studens.setFirst_name(first_name);
+        studens.setLast_name(last_name);
+        studens.setGroup_id(group);
+        studentsRepository.save(studens);
+        return "redirect:/students";
+    }
 }
