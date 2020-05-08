@@ -30,37 +30,26 @@
 				<div
 					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 					<h1 class="h2" th:text="${title}" />
-					<div class="btn-toolbar mb-2 mb-md-0">
-						<div class="btn-group mr-2">
-							<a class="btn btn-sm btn-outline-secondary" href="/students/add">Add new</a>
-						</div>
-					</div>
 				</div>
-				<div class="table-responsive">
-					<table class="table table-striped table-sm">
-						<thead>
-							<tr>
-								<th>Id</th>
-								<th>First name</th>
-								<th>Last name</th>
-								<th>Group</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="el : ${students}">
-								<td th:text="${el.student_id}" />
-								<td th:text="${el.first_name}" />
-								<td th:text="${el.last_name}" />
-								<td th:text="${el.group_id}" />
-								<td>
-									<a th:href="'/students/' + ${el.student_id} + '/edit'">Edit</a>
-									<a th:href="'/students/' + ${el.student_id} + '/delete'">Delete</a>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+				<div th:each="el : ${student}">
+					<form method="post">
+						<input type="text" th:value="${el.first_name}" name="first_name" placeholder="Enter first name" class="form-control"><br>
+						<input type="text" th:value="${el.last_name}"name="last_name" placeholder="Enter last name" class="form-control"><br>
+						<select class="form-control" name="group">
+  							<option value="1" th:selected="${el.group_id==1}">1</option>
+  							<option value="2" th:selected="${el.group_id==2}">2</option>
+  							<option value="3" th:selected="${el.group_id==3}">3</option>
+  							<option value="4" th:selected="${el.group_id==4}">4</option>
+  							<option value="5" th:selected="${el.group_id==5}">5</option>
+  							<option value="6" th:selected="${el.group_id==6}">6</option>
+  							<option value="7" th:selected="${el.group_id==7}">7</option>
+  							<option value="8" th:selected="${el.group_id==8}">8</option>
+  							<option value="9" th:selected="${el.group_id==9}">9</option>
+  							<option value="10" th:selected="${el.group_id==10}">10</option>
+						</select><br>
+						<button type="submit" class="btn btn-success  btn-block">Edit</button>
+					</form>
+				</div>	
 			</main>
 		</div>
 	</div>
