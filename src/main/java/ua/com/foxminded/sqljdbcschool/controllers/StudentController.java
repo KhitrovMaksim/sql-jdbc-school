@@ -64,4 +64,11 @@ public class StudentController {
         studentsRepository.save(studens);
         return "redirect:/students";
     }
+    
+    @PostMapping("/students/{id}/delete")
+    public String studentDeletePost(@PathVariable(value = "id") int id, Model model) {
+        Students studens = studentsRepository.findById(id).orElseThrow(null);
+        studentsRepository.delete(studens);
+        return "redirect:/students";
+    }
 }
