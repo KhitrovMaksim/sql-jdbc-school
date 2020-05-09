@@ -4,12 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Students {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator( name = "jpaSequence", sequenceName = "JPA_SEQUENCE", allocationSize = 1, initialValue = 200 )
+    @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "jpaSequence")
     private int student_id;
     private int group_id;
     private String first_name;

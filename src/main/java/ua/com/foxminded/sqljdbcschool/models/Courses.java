@@ -1,5 +1,6 @@
 package ua.com.foxminded.sqljdbcschool.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -9,6 +10,7 @@ public class Courses {
     @Id
     private int course_id;
     private String course_name;
+    @Column(columnDefinition = "text")
     private String course_description;
 
     public int getCourse_id() {
