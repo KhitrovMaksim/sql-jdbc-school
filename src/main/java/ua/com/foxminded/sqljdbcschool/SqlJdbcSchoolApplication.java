@@ -6,8 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SqlJdbcSchoolApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SqlJdbcSchoolApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SchoolData schoolData = new SchoolData();
+        schoolData.generate();
+        
+        SpringApplication.run(SqlJdbcSchoolApplication.class, args);
+    }
 }

@@ -18,7 +18,7 @@ import javax.persistence.SequenceGenerator;
 public class Students {
 
     @Id
-    @SequenceGenerator( name = "jpaSequence", sequenceName = "JPA_SEQUENCE", allocationSize = 1, initialValue = 200 )
+    @SequenceGenerator( name = "jpaSequence", sequenceName = "JPA_SEQUENCE", allocationSize = 1, initialValue = 201 )
     @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "jpaSequence")
     private int student_id;
     private int group_id;
