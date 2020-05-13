@@ -1,9 +1,17 @@
 package ua.com.foxminded.sqljdbcschool.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -16,7 +24,15 @@ public class Students {
     private int group_id;
     private String first_name;
     private String last_name;
-
+    
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "students_courses",
+            joinColumns = {@JoinColumn(name = "student_id")},
+            inverseJoinColumns = {@JoinColumn(name = "course_id")}
+            )
+    private Set<Courses> courses = new HashSet<>();
+    
     public Students() {
     }
     
