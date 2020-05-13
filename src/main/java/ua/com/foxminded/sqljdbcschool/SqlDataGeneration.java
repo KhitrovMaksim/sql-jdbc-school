@@ -17,12 +17,12 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.mifmif.common.regex.Generex;
 
 @Component
-public class Bean implements CommandLineRunner {
+public class SqlDataGeneration implements CommandLineRunner {
+    private String pathToResources = getClass().getClassLoader().getResource("").getPath();
 
     public void run(String... args) throws IOException {
-        String pathToFile = getClass().getClassLoader().getResource("").getPath();
-        String groupsSql = pathToFile + "groups.sql";
-        String studentsSql = pathToFile + "students.sql";
+        String groupsSql = pathToResources + "groups.sql";
+        String studentsSql = pathToResources + "students.sql";
 
         if (Boolean.FALSE.equals(sqlFileExist(groupsSql))) {
             createSqlFile(groupsSql);
@@ -68,36 +68,11 @@ public class Bean implements CommandLineRunner {
     }
 
     private void generateStudents(String studentsSql) {
-        String pathToFile = getClass().getClassLoader().getResource("").getPath();
-        String firstNamesPath = pathToFile + "first-names.txt";
-        String lastNamesPath = pathToFile + "last-names.txt";
-        List<String> firstNames = new ArrayList<>();
-        List<String> lastNames = new ArrayList<>();
-        List<Integer> groupsNumber = new ArrayList<>();
-        Generex generateNumbers = new Generex("[0-9]");
-
-        for (int i = 0; i < 10; i++) {
-            firstNames.addAll(readNames(firstNamesPath));
-            lastNames.addAll(readNames(lastNamesPath));
-        }
-
-        for (int i = 0; i < 200; i++) {
-            int[] counterGroupNumbers = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            int groupNumber = Integer.parseInt(generateNumbers.random());
-            int[] groupNumbers = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            int indexOfNumber = ArrayUtils.indexOf(groupNumbers, groupNumber);
-            counterGroupNumbers[indexOfNumber] += 1;
-
-            if (counterGroupNumbers[indexOfNumber] == 30
-                    || (i == 199 && IntStream.of(counterGroupNumbers).anyMatch(x -> x < 10))) {
-                groupNumber = -1;
-            }
-
-            groupsNumber.add(groupNumber + 1);
-        }
-
-        Collections.shuffle(firstNames);
-        Collections.shuffle(lastNames);
+        String firstNamesPath = pathToResources + "first-names.txt";
+        String lastNamesPath = pathToResources + "last-names.txt";
+        List<String> firstNames = generateNames(firstNamesPath);
+        List<String> lastNames = generateNames(lastNamesPath);
+        List<Integer> groupsNumber = generateGroupsNumbers();
 
         try {
             FileWriter file = new FileWriter(studentsSql);
@@ -115,10 +90,21 @@ public class Bean implements CommandLineRunner {
 
     }
 
-    private List<String> readNames(String namesFile) {
+    private List<String> generateNames(String pathToFileWithNames) {
+        List<String> names = new ArrayList<String>();
+
+        for (int i = 0; i < 10; i++) {
+            names.addAll(readNames(pathToFileWithNames));
+        }
+
+        Collections.shuffle(names);
+        return names;
+    }
+
+    private List<String> readNames(String pathToFileWithNames) {
         List<String> names = new ArrayList<>();
         try {
-            File file = new File(namesFile);
+            File file = new File(pathToFileWithNames);
             Scanner myReader = new Scanner(file);
 
             while (myReader.hasNextLine()) {
@@ -133,4 +119,25 @@ public class Bean implements CommandLineRunner {
         return names;
     }
 
+    private List<Integer> generateGroupsNumbers() {
+        List<Integer> groupsNumbers = new ArrayList<>();
+        Generex generateNumbers = new Generex("[0-9]");
+
+        for (int i = 0; i < 200; i++) {
+            int[] counterGroupNumbers = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            int groupNumber = Integer.parseInt(generateNumbers.random());
+            int[] groupNumbers = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            int indexOfNumber = ArrayUtils.indexOf(groupNumbers, groupNumber);
+            counterGroupNumbers[indexOfNumber] += 1;
+
+            if (counterGroupNumbers[indexOfNumber] == 30
+                    || (i == 199 && IntStream.of(counterGroupNumbers).anyMatch(x -> x < 10))) {
+                groupNumber = -1;
+            }
+
+            groupsNumbers.add(groupNumber + 1);
+        }
+
+        return groupsNumbers;
+    }
 }
