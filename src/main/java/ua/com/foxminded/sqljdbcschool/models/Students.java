@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,7 +22,9 @@ public class Students {
     @SequenceGenerator( name = "jpaSequence", sequenceName = "JPA_SEQUENCE", allocationSize = 1, initialValue = 201 )
     @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "jpaSequence")
     private int student_id;
-    private int group_id;
+    
+    @Column(name="group_id")
+    private int group;
     private String first_name;
     private String last_name;
     
@@ -36,10 +39,10 @@ public class Students {
     public Students() {
     }
     
-    public Students(String first_name, String last_name, int group_id) {
+    public Students(String first_name, String last_name, int group) {
         this.first_name = first_name;
         this.last_name = last_name;
-        this.group_id = group_id;
+        this.group = group;
     }
     
     public int getStudent_id() {
@@ -51,11 +54,11 @@ public class Students {
     }
 
     public int getGroup_id() {
-        return group_id;
+        return group;
     }
 
     public void setGroup_id(int group_id) {
-        this.group_id = group_id;
+        this.group = group_id;
     }
 
     public String getFirst_name() {

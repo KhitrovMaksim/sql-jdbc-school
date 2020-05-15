@@ -28,12 +28,12 @@
             <tr>
               <th>#</th>
               <th>Name</th>
+              <th>Students</th>
             </tr>
           </thead>
           <tbody>
-            <tr th:each="el : ${groups}">
-              <td th:text="${el.group_id}"/>
-              <td th:text="${el.group_name}"/>
+            <tr th:each="group: ${groups}">
+              <td th:each="data : ${group}" th:text="${data}"/>
             </tr>
           </tbody>
         </table>
