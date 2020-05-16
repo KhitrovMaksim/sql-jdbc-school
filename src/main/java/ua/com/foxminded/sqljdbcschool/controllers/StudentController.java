@@ -1,8 +1,10 @@
 package ua.com.foxminded.sqljdbcschool.controllers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,14 +14,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ua.com.foxminded.sqljdbcschool.models.Courses;
 import ua.com.foxminded.sqljdbcschool.models.Students;
+import ua.com.foxminded.sqljdbcschool.repo.CoursesRepository;
 import ua.com.foxminded.sqljdbcschool.repo.StudentsRepository;
 
 @Controller
 public class StudentController {
-
     @Autowired
     private StudentsRepository studentsRepository;
+    
+    @Autowired
+    private CoursesRepository coursesRepository;
 
     @GetMapping("/students")
     public String studentsMainPage(Model model) {
@@ -59,18 +65,57 @@ public class StudentController {
     @PostMapping("/students/{id}/edit")
     public String studentEditPost(@PathVariable(value = "id") int id, @RequestParam String first_name,
             @RequestParam String last_name, @RequestParam Integer group, Model model) {
-        Students studens = studentsRepository.findById(id).orElseThrow(null);
-        studens.setFirst_name(first_name);
-        studens.setLast_name(last_name);
-        studens.setGroup_id(group);
-        studentsRepository.save(studens);
+        Students student = studentsRepository.findById(id).orElseThrow(null);
+        student.setFirst_name(first_name);
+        student.setLast_name(last_name);
+        student.setGroup_id(group);
+        studentsRepository.save(student);
         return "redirect:/students";
     }
 
     @PostMapping("/students/{id}/delete")
     public String studentDeletePost(@PathVariable(value = "id") int id, Model model) {
-        Students studens = studentsRepository.findById(id).orElseThrow(null);
-        studentsRepository.delete(studens);
+        Students student = studentsRepository.findById(id).orElseThrow(null);
+        studentsRepository.delete(student);
         return "redirect:/students";
+    }
+    
+    @GetMapping("/students/{id}/courses")
+    public String studentCourses(@PathVariable(value = "id") int id, Model model) {
+        Students student = studentsRepository.findById(id).orElseThrow(null);
+        Iterable<Courses> allCourses = coursesRepository.findAll();
+        Set<Courses> studentCourses = student.getCourses();
+        Set<Courses> coursesToAdd = new HashSet<>();
+        allCourses.forEach(coursesToAdd::add);
+        coursesToAdd.removeAll(studentCourses);
+        model.addAttribute("title", "Student: "  + student.getFirst_name() + " " + student.getLast_name());
+        model.addAttribute("coursesToAdd", coursesToAdd);
+        model.addAttribute("student", id);
+        model.addAttribute("courses", studentCourses);
+        return "student-courses";
+    }
+    
+    @PostMapping("/students/{studentId}/courses/{courseId}/delete")
+    public String studentDeleteCourses(@PathVariable(value = "studentId") int studentId, @PathVariable(value = "courseId") int courseId, Model model) {
+        Students student = studentsRepository.findById(studentId).orElseThrow(null);
+        model.addAttribute("title", "Student: "  + student.getFirst_name() + " " + student.getLast_name());
+        Courses course = coursesRepository.findById(courseId).orElseThrow(null);
+        student.removeCourse(course);
+        studentsRepository.save(student);
+        Set<Courses> courses = student.getCourses();
+        model.addAttribute("courses", courses);
+        return "redirect:/students/" + studentId + "/courses";
+    }
+    
+    @PostMapping("/students/{studentId}/courses/add")
+    public String studentAddCourses(@PathVariable(value = "studentId") int studentId, @RequestParam int courseId, Model model) {
+        Students student = studentsRepository.findById(studentId).orElseThrow(null);
+        model.addAttribute("title", "Student: "  + student.getFirst_name() + " " + student.getLast_name());
+        Courses course = coursesRepository.findById(courseId).orElseThrow(null);
+        student.addCourse(course);
+        studentsRepository.save(student);
+        Set<Courses> courses = student.getCourses();
+        model.addAttribute("courses", courses);
+        return "redirect:/students/" + studentId + "/courses";
     }
 }

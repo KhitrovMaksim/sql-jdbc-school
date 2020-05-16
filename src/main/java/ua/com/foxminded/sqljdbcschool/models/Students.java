@@ -76,5 +76,19 @@ public class Students {
     public void setLast_name(String last_name) {
         this.last_name = last_name;
     }
+    
+    public Set<Courses> getCourses() {
+        return courses;
+    }
+    
+    public void addCourse(Courses course) {
+        this.courses.add(course);
+        course.getStudents().add(this);
+    }
+    
+    public void removeCourse(Courses course) {
+        this.courses.remove(course);
+        course.getStudents().remove(this);
+    }
 
 }

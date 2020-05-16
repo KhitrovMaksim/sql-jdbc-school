@@ -30,12 +30,8 @@
 				<div
 					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 					<h1 class="h2" th:text="${title}" />
-					<div class="btn-toolbar mb-2 mb-md-0">
-						<div class="btn-group mr-2">
-							<a class="btn btn-sm btn-outline-secondary" href="/students/add">Add new</a>
-						</div>
-					</div>
 				</div>
+				<h6 class="h6" th:text="'Count of students = ' + ${count}" />
 				<div class="table-responsive">
 					<table class="table table-sm table-hover">
 						<thead>
@@ -54,10 +50,8 @@
 								<td th:text="${student.last_name}" />
 								<td th:text="${student.group_id}" />
 								<td>
-									<form th:action="'/students/' + ${student.student_id} + '/delete'" method="post">
-										<a th:href="'/students/' + ${student.student_id} + '/courses'" class="btn btn-link btn-sm">Courses</a>
-										<a th:href="'/students/' + ${student.student_id} + '/edit'" class="btn btn-link btn-sm">Edit</a>
-										<button th:href="'/students/' + ${student.student_id} + '/delete'" class="btn btn-link btn-sm" type="submit">Delete</button>
+									<form th:action="'/courses/' + ${course} + '/delete/' + ${student.student_id}" method="post">
+										<button th:href="'/courses/' + ${course} + '/delete/' + ${student.student_id}" class="btn btn-link btn-sm" type="submit">Delete from course</button>
 									</form>
 								</td>
 							</tr>

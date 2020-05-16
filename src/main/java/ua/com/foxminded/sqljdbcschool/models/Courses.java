@@ -45,5 +45,18 @@ public class Courses {
     public void setCourse_description(String course_description) {
         this.course_description = course_description;
     }
-
+    
+    public Set<Students> getStudents() {
+        return students;
+    }
+    
+    public void addStudent(Students student) {
+        this.students.add(student);
+        student.getCourses().add(this);
+    }
+    
+    public void removeStudent(Students student) {
+        this.students.remove(student);
+        student.getCourses().remove(this);
+    }
 }

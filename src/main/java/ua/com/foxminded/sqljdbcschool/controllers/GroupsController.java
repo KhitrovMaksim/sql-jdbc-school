@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ua.com.foxminded.sqljdbcschool.repo.GroupsRepository;
 import ua.com.foxminded.sqljdbcschool.repo.StudentsRepository;
@@ -37,10 +39,39 @@ public class GroupsController {
             info[2] = Integer.toString(studentsRepository.countAllByGroup(i));
             groupsWithNumberOfStudents.add(info);
         }
-        
+
         model.addAttribute("groups", groupsWithNumberOfStudents);
         return "groups-main-page";
     }
-    
-    //@PostMapping("/groups")
+
+    @PostMapping("/groups")
+    public String groupsWithLessOrEqualsStudentCount(@RequestParam int count, Model model) {
+        List<String[]> groupsWithNumberOfStudents = new ArrayList<>();
+        String notFound = "";
+        
+        if ((count >= 0) && (count <= 30)) {
+            Map<Integer, String> groups = new HashMap<>();
+            groupsRepository.findAll().forEach(group -> groups.put(group.getGroup_id(), group.getGroup_name()));
+
+ 
+            for (int i = 1; i <= groups.size(); i++) {
+                if (count >= studentsRepository.countAllByGroup(i)) {
+                    String[] info = new String[3];
+                    info[0] = Integer.toString(i);
+                    info[1] = groups.get(i);
+                    info[2] = Integer.toString(studentsRepository.countAllByGroup(i));
+                    groupsWithNumberOfStudents.add(info);
+                }
+            }
+        }
+        
+        if (groupsWithNumberOfStudents.isEmpty()) {
+            notFound = "Not found";
+        }
+        
+        model.addAttribute("title", "Groups with count of students <=" + count);
+        model.addAttribute("empty", notFound);
+        model.addAttribute("groups", groupsWithNumberOfStudents);
+        return "groups-main-page";
+    }
 }
